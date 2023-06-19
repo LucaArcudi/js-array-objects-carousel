@@ -27,19 +27,27 @@ const images = [
 ];
 
 const carouselWrapper = document.querySelector("div.carousel-image");
+const thumbnailWrapper = document.querySelector('div.carousel-thumbnails')
 let activeIndex = 0;
 
 images.forEach((slide) => {
    carouselWrapper.innerHTML += `
    <div class="my_carousel-item">
-   <img src="${slide.image}" alt="${slide.title} image">
-   <h1>${slide.title}</h1>
-   <p>${slide.text}</p>
+      <img src="${slide.image}" alt="${slide.title} image">
+      <h1>${slide.title}</h1>
+      <p>${slide.text}</p>
    </div>
    `
+   thumbnailWrapper.innerHTML += `
+   <div class="my_thumbnail-item">
+      <img class="img-fluid" src="${slide.image}" alt="${slide.title} image">
+   </div>
+   `
+
 });
 
 document.getElementsByClassName("my_carousel-item")[activeIndex].classList.add("active");
+document.getElementsByClassName('my_thumbnail-item')[activeIndex].classList.add("active");
 
 const prevButton = document.querySelector("div.button.previous");
 prevButton.addEventListener("click", function () {
@@ -53,6 +61,8 @@ nextButton.addEventListener("click", function () {
    activeIndex = newActiveIndex;
 });
 
+
+
 /*********************************************************************************************************************
 CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS
 *********************************************************************************************************************/
@@ -65,22 +75,26 @@ CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCT
 
 function prevSlide(currentActiveIndex) {
    document.querySelector("div.my_carousel-item.active").classList.remove("active");
+   document.querySelector("div.my_thumbnail-item.active").classList.remove("active");
    if (currentActiveIndex === 0) {
       currentActiveIndex = 4;
    } else {
       currentActiveIndex--;
    }
    document.getElementsByClassName("my_carousel-item")[currentActiveIndex].classList.add("active");
+   document.getElementsByClassName("my_thumbnail-item")[currentActiveIndex].classList.add("active");
    return currentActiveIndex;
 }
 
 function nextSlide(currentActiveIndex) {
    document.querySelector("div.my_carousel-item.active").classList.remove("active");
+   document.querySelector("div.my_thumbnail-item.active").classList.remove("active");
    if (currentActiveIndex === 4) {
       currentActiveIndex = 0;
    } else {
       currentActiveIndex++;
    }
    document.getElementsByClassName("my_carousel-item")[currentActiveIndex].classList.add("active");
+   document.getElementsByClassName("my_thumbnail-item")[currentActiveIndex].classList.add("active");
    return currentActiveIndex;
 }
