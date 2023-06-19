@@ -30,7 +30,7 @@ const carouselWrapper = document.querySelector("div.carousel-image");
 let activeIndex = 0;
 
 images.forEach((slide) => {
-   carouselWrapper.innerHTML +=`
+   carouselWrapper.innerHTML += `
    <div class="my_carousel-item">
    <img src="${slide.image}" alt="${slide.title} image">
    <h1>${slide.title}</h1>
@@ -43,27 +43,44 @@ document.getElementsByClassName("my_carousel-item")[activeIndex].classList.add("
 
 const prevButton = document.querySelector("div.button.previous");
 prevButton.addEventListener("click", function () {
-   document.querySelector("div.my_carousel-item.active").classList.remove("active");
-
-   if (activeIndex <= 0){
-      activeIndex = 4
-   } else {
-      activeIndex--;
-   }
-
-
-   document.getElementsByClassName("my_carousel-item")[activeIndex].classList.add("active");
+   let newActiveIndex = prevSlide(activeIndex);
+   activeIndex = newActiveIndex;
 });
 
 const nextButton = document.querySelector("div.button.next");
 nextButton.addEventListener("click", function () {
-   document.querySelector("div.my_carousel-item.active").classList.remove("active");
-
-   if (activeIndex >= 4){
-      activeIndex = 0
-   } else {
-      activeIndex++;
-   }
-
-   document.getElementsByClassName("my_carousel-item")[activeIndex].classList.add("active");
+   let newActiveIndex = nextSlide(activeIndex);
+   activeIndex = newActiveIndex;
 });
+
+/*********************************************************************************************************************
+CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS
+*********************************************************************************************************************/
+/*********************************************************************************************************************
+CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS
+*********************************************************************************************************************/
+/*********************************************************************************************************************
+CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS
+*********************************************************************************************************************/
+
+function prevSlide(currentActiveIndex) {
+   document.querySelector("div.my_carousel-item.active").classList.remove("active");
+   if (currentActiveIndex === 0) {
+      currentActiveIndex = 4;
+   } else {
+      currentActiveIndex--;
+   }
+   document.getElementsByClassName("my_carousel-item")[currentActiveIndex].classList.add("active");
+   return currentActiveIndex;
+}
+
+function nextSlide(currentActiveIndex) {
+   document.querySelector("div.my_carousel-item.active").classList.remove("active");
+   if (currentActiveIndex === 4) {
+      currentActiveIndex = 0;
+   } else {
+      currentActiveIndex++;
+   }
+   document.getElementsByClassName("my_carousel-item")[currentActiveIndex].classList.add("active");
+   return currentActiveIndex;
+}
