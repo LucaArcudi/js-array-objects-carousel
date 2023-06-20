@@ -27,7 +27,7 @@ const images = [
 ];
 
 const carouselWrapper = document.querySelector("div.carousel-image");
-const thumbnailWrapper = document.querySelector('div.carousel-thumbnails')
+const thumbnailWrapper = document.querySelector('div.carousel-thumbnails');
 let activeIndex = 0;
 
 images.forEach((slide) => {
@@ -61,7 +61,13 @@ nextButton.addEventListener("click", function () {
    activeIndex = newActiveIndex;
 });
 
-
+const thumbnailsList = document.querySelectorAll('.my_thumbnail-item');
+thumbnailsList.forEach((thumbnail, index) => {
+   thumbnail.addEventListener('click', function () {
+      let newActiveIndex = changeSlide(activeIndex, index);
+      activeIndex = newActiveIndex;
+   })
+})
 
 /*********************************************************************************************************************
 CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS
@@ -76,7 +82,7 @@ CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCT
 function prevSlide(currentActiveIndex) {
    document.querySelector("div.my_carousel-item.active").classList.remove("active");
    document.querySelector("div.my_thumbnail-item.active").classList.remove("active");
-   if (currentActiveIndex === 0) {
+   if (currentActiveIndex <= 0) {
       currentActiveIndex = 4;
    } else {
       currentActiveIndex--;
@@ -89,11 +95,20 @@ function prevSlide(currentActiveIndex) {
 function nextSlide(currentActiveIndex) {
    document.querySelector("div.my_carousel-item.active").classList.remove("active");
    document.querySelector("div.my_thumbnail-item.active").classList.remove("active");
-   if (currentActiveIndex === 4) {
+   if (currentActiveIndex >= 4) {
       currentActiveIndex = 0;
    } else {
       currentActiveIndex++;
    }
+   document.getElementsByClassName("my_carousel-item")[currentActiveIndex].classList.add("active");
+   document.getElementsByClassName("my_thumbnail-item")[currentActiveIndex].classList.add("active");
+   return currentActiveIndex;
+}
+
+function changeSlide(currentActiveIndex, thumbnailIndex) {
+   document.querySelector("div.my_carousel-item.active").classList.remove("active");
+   document.querySelector("div.my_thumbnail-item.active").classList.remove("active");
+   currentActiveIndex = thumbnailIndex;
    document.getElementsByClassName("my_carousel-item")[currentActiveIndex].classList.add("active");
    document.getElementsByClassName("my_thumbnail-item")[currentActiveIndex].classList.add("active");
    return currentActiveIndex;
