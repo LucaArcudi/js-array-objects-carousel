@@ -26,12 +26,12 @@ const images = [
    }
 ];
 
-const carouselWrapper = document.querySelector("div.carousel-image");
+const slideWrapper = document.querySelector("div.carousel-image");
 const thumbnailWrapper = document.querySelector('div.carousel-thumbnails');
 let activeIndex = 0;
 
 images.forEach((slide) => {
-   carouselWrapper.innerHTML += `
+   slideWrapper.innerHTML += `
    <div class="my_carousel-item">
       <img src="${slide.image}" alt="${slide.title} image">
       <h1>${slide.title}</h1>
@@ -44,6 +44,15 @@ images.forEach((slide) => {
    </div>
    `
 
+   /** TODO
+    * create div el 
+    * add my_thumbnail-item class
+    * add forEach index as a custom attribute to created el (setAttribute)
+    * add eventListener "click" in order to change slide by using the custom attribute above created (getAttribute)
+    * append to his parent (thumbnailwrapper)
+    */
+
+
 });
 
 document.getElementsByClassName("my_carousel-item")[activeIndex].classList.add("active");
@@ -51,65 +60,66 @@ document.getElementsByClassName('my_thumbnail-item')[activeIndex].classList.add(
 
 const prevButton = document.querySelector("div.button.previous");
 prevButton.addEventListener("click", function () {
-   let newActiveIndex = prevSlide(activeIndex);
-   activeIndex = newActiveIndex;
+   if (activeIndex <= 0) {
+      activeIndex = 4;
+   } else {
+      activeIndex--;
+   }
+   changeSlide(activeIndex);
 });
 
 const nextButton = document.querySelector("div.button.next");
 nextButton.addEventListener("click", function () {
-   let newActiveIndex = nextSlide(activeIndex);
-   activeIndex = newActiveIndex;
+   if (activeIndex >= 4) {
+      activeIndex = 0;
+   } else {
+      activeIndex++;
+   }
+   changeSlide(activeIndex);
 });
 
 const thumbnailsList = document.querySelectorAll('.my_thumbnail-item');
 thumbnailsList.forEach((thumbnail, index) => {
    thumbnail.addEventListener('click', function () {
-      let newActiveIndex = changeSlide(activeIndex, index);
-      activeIndex = newActiveIndex;
+      activeIndex = index;
+      changeSlide(activeIndex);
+   });
+});
+
+// AUTOPLAY
+const carouselWrapper = document.querySelector('.carousel-wrapper');
+
+const autoPlay = setInterval(function () {
+   if (activeIndex >= 4) {
+      activeIndex = 0;
+   } else {
+      activeIndex++;
+   }
+   changeSlide(activeIndex);
+}, 2500);
+
+carouselWrapper.addEventListener('mouseenter', function () {
+   clearInterval(autoPlay);
+})
+
+carouselWrapper.addEventListener('mouseleave', function () {
+   const autoPlay = setInterval(function () {
+      if (activeIndex >= 4) {
+         activeIndex = 0;
+      } else {
+         activeIndex++;
+      }
+      changeSlide(activeIndex);
+   }, 2500);
+   carouselWrapper.addEventListener('mouseenter', function () {
+      clearInterval(autoPlay);
    })
 })
 
-/*********************************************************************************************************************
-CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS
-*********************************************************************************************************************/
-/*********************************************************************************************************************
-CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS
-*********************************************************************************************************************/
-/*********************************************************************************************************************
-CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS CUSTOM FUNCTIONS
-*********************************************************************************************************************/
-
-function prevSlide(currentActiveIndex) {
+// CUSTOM FUNCTIONS
+function changeSlide(currentActiveIndex) {
    document.querySelector("div.my_carousel-item.active").classList.remove("active");
    document.querySelector("div.my_thumbnail-item.active").classList.remove("active");
-   if (currentActiveIndex <= 0) {
-      currentActiveIndex = 4;
-   } else {
-      currentActiveIndex--;
-   }
    document.getElementsByClassName("my_carousel-item")[currentActiveIndex].classList.add("active");
    document.getElementsByClassName("my_thumbnail-item")[currentActiveIndex].classList.add("active");
-   return currentActiveIndex;
-}
-
-function nextSlide(currentActiveIndex) {
-   document.querySelector("div.my_carousel-item.active").classList.remove("active");
-   document.querySelector("div.my_thumbnail-item.active").classList.remove("active");
-   if (currentActiveIndex >= 4) {
-      currentActiveIndex = 0;
-   } else {
-      currentActiveIndex++;
-   }
-   document.getElementsByClassName("my_carousel-item")[currentActiveIndex].classList.add("active");
-   document.getElementsByClassName("my_thumbnail-item")[currentActiveIndex].classList.add("active");
-   return currentActiveIndex;
-}
-
-function changeSlide(currentActiveIndex, thumbnailIndex) {
-   document.querySelector("div.my_carousel-item.active").classList.remove("active");
-   document.querySelector("div.my_thumbnail-item.active").classList.remove("active");
-   currentActiveIndex = thumbnailIndex;
-   document.getElementsByClassName("my_carousel-item")[currentActiveIndex].classList.add("active");
-   document.getElementsByClassName("my_thumbnail-item")[currentActiveIndex].classList.add("active");
-   return currentActiveIndex;
 }
